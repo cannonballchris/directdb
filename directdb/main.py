@@ -64,6 +64,21 @@ class Postgresql:
 				except Exception as e:
 					raise DatabaseTableException(e)
 
+	async def drop_table(self, table:str) -> None:
+		""" Drops a table from the database.
+		
+		Parameters
+		----------
+		table: str
+			The table to drop.
+
+		"""
+		try:
+			query = 'DROP TABLE IF EXISTS {}'.format(table)
+			await self.pool.execute(query)
+		except Exception as e:
+			raise DatabaseTableException(e)
+
 	async def insert(self, table: str, data: dict) -> None:
 		""" Inserts data into the database.
 		
