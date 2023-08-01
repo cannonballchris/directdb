@@ -4,7 +4,7 @@ import asyncpg
 
 from .exceptions import *
 
-class Postgresql:	
+class Postgresql:
 	""" A class to handle all database related tasks efficiently.
 	
 	Parameters
@@ -30,7 +30,7 @@ class Postgresql:
 		self.password = password
 		self.database = database
 		self.port = port
-	
+
 
 	async def connect(self) -> asyncpg.Pool:
 		""" Connects to the database. 
@@ -41,9 +41,11 @@ class Postgresql:
 			The custom database handler class.
 
 		"""
-		self.pool = await asyncpg.create_pool(host=self.host, user=self.user, password=self.password, database=self.database, port=self.port)
+		self.pool = await asyncpg.create_pool(
+			host=self.host, user=self.user, password=self.password, database=self.database, port=self.port
+		)
 		return self.pool
-	
+
 	async def create_table(self, tables:list) -> None:
 		""" Creates table(s) in the database.
 		
@@ -97,7 +99,7 @@ class Postgresql:
 			await self.pool.execute(query, *data.values())
 		except Exception as e:
 			raise DatabaseInsertionException(e)
-	
+
 	async def fetch(self, table:str, *, filter:dict = None) -> list:
 		""" Fetches data from the database.
 		
@@ -125,7 +127,7 @@ class Postgresql:
 
 		except Exception as e:
 			raise DatabaseFetchException(e)
-	
+
 	async def update(self, table:str, data:dict, filter:dict) -> None:
 		""" Updates data in the database.
 		
