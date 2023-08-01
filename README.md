@@ -21,7 +21,7 @@ To install the library, use `pip install directdb`
 
 ## Documentation
 
-[Documentation](https://linktodocumentation)
+[Documentation](https://indigodev.gitbook.io/directdb)
 
 
 ## Usage/Examples
