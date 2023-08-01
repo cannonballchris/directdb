@@ -100,15 +100,15 @@ class Postgresql:
 		except Exception as e:
 			raise DatabaseInsertionException(e)
 
-	async def fetch(self, table:str, *, filter:dict = None) -> list:
+	async def fetch(self, table:str, *, data_filter:dict = None) -> list:
 		""" Fetches data from the database.
 		
 		Parameters
 		----------
 		table: str
 			The table to fetch data from.
-		filter: dict [Optional]
-			The filter to use in format {'column name':data}.
+		data_filter: dict [Optional]
+			The data_filter to use in format {'column name':data}.
 
 		Returns
 		-------
@@ -117,18 +117,18 @@ class Postgresql:
 
 		"""
 		try:
-			if not filter:
+			if not data_filter:
 				query = 'SELECT * FROM {}'.format(table)
 				return await self.pool.fetch(query)
 			else:
-				filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(filter)])
-				query = 'SELECT * FROM {} WHERE {}'.format(table, filters)
-				return await self.pool.fetch(query, *filter.values())
+				data_filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data_filter)])
+				query = 'SELECT * FROM {} WHERE {}'.format(table, data_filters)
+				return await self.pool.fetch(query, *data_filter.values())
 
 		except Exception as e:
 			raise DatabaseFetchException(e)
 
-	async def update(self, table:str, data:dict, filter:dict) -> None:
+	async def update(self, table:str, data:dict, data_filter:dict) -> None:
 		""" Updates data in the database.
 		
 		Parameters
@@ -137,33 +137,33 @@ class Postgresql:
 			The table to update data in.
 		data: dict
 			The data to update in format {'column name':data}.
-		filter: dict
-			The filter to use in format {'column name':data}.
+		data_filter: dict
+			The data_filter to use in format {'column name':data}.
 
 		"""
 		try:
-			#Since $1, $2 etc are used in update data, we need to continue from there for filter data to avoid errors.
+			#Since $1, $2 etc are used in update data, we need to continue from there for data_filter data to avoid errors.
 			columns = ', '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data)])
-			filters = ' AND '.join(['{} = ${}'.format(column, i + len(data) + 1) for i, column in enumerate(filter)])
-			query = 'UPDATE {} SET {} WHERE {}'.format(table, columns, filters)
-			await self.pool.execute(query, *data.values(), *filter.values())
+			data_filters = ' AND '.join(['{} = ${}'.format(column, i + len(data) + 1) for i, column in enumerate(data_filter)])
+			query = 'UPDATE {} SET {} WHERE {}'.format(table, columns, data_filters)
+			await self.pool.execute(query, *data.values(), *data_filter.values())
 		except Exception as e:
 			raise DatabaseUpdateException(e)
 
-	async def delete(self, table:str, filter:dict) -> None:
+	async def delete(self, table:str, data_filter:dict) -> None:
 		""" Deletes data from the database.
 		
 		Parameters
 		----------
 		table: str
 			The table to delete data from.
-		filter: dict
-			The filter to use in format {'column name':data}.
+		data_filter: dict
+			The data_filter to use in format {'column name':data}.
 
 		"""
 		try:
-			filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(filter)])
-			query = 'DELETE FROM {} WHERE {}'.format(table, filters)
-			await self.pool.execute(query, *filter.values())
+			data_filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data_filter)])
+			query = 'DELETE FROM {} WHERE {}'.format(table, data_filters)
+			await self.pool.execute(query, *data_filter.values())
 		except Exception as e:
 			raise DatabaseDeleteException(e)
