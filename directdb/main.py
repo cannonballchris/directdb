@@ -1,5 +1,6 @@
 # LICENSE
 # -----------------------------------------------------------------------
+# Copyright (c) CannonBall Chris,  2023
 # directdb is distributed under the terms of the GNU Affero General Public License (AGPL).
 # You can find a copy of the license in the LICENSE file included with this distribution.
 # The AGPL is a copyleft license that ensures the freedom to use, modify, and distribute the library's code, even in the case of web-based services.
@@ -107,7 +108,7 @@ class Postgresql:
 		except Exception as e:
 			raise DatabaseInsertionException(e)
 
-	async def fetch(self, table:str, *, data_filter:dict = None) -> list:
+	async def fetch(self, table:str, *, data_filter:dict = None, **sorting) -> list:
 		""" Fetches data from the database.
 		
 		Parameters
@@ -116,6 +117,10 @@ class Postgresql:
 			The table to fetch data from.
 		data_filter: dict [Optional]
 			The data_filter to use in format {'column name':data}.
+		sort_by: str
+			The column to sort the data by.The data which will be sorted will be always in descending order.
+		sort : str
+			The order to sort the data by. Can be either 'ASC' or 'DESC'.
 
 		Returns
 		-------
@@ -126,10 +131,20 @@ class Postgresql:
 		try:
 			if not data_filter:
 				query = 'SELECT * FROM {}'.format(table)
+				if sorting:
+					sort_by = sorting.get('sort_by', None)
+					sort = sorting.get('sort', None)
+					if sort_by and sort:
+						query += ' ORDER BY {} {}'.format(sort_by, sort)
 				return await self.pool.fetch(query)
 			else:
 				data_filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data_filter)])
 				query = 'SELECT * FROM {} WHERE {}'.format(table, data_filters)
+				if sorting:
+					sort_by = sorting.get('sort_by')
+					sort = sorting.get('sort')
+					if sort_by and sort:
+						query += ' ORDER BY {} {}'.format(sort_by, sort)
 				return await self.pool.fetch(query, *data_filter.values())
 
 		except Exception as e:

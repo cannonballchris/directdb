@@ -2,3 +2,4 @@ build
 directdb.egg-info
 dist
 directdb/.pylintrc
+directdb/__pycache__
