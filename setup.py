@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(here, "README.md"), encoding="utf-8") as fh:
     long_description = "\n" + fh.read()
 
-VERSION = '1.0.1'
+VERSION = '1.1.0'
 DESCRIPTION = 'An async package that makes database handling extremely easy!'
 
 # Setting up
@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
     packages=find_packages(),
     install_requires=['asyncpg'],
-    keywords=['db', 'bot', 'discord bot', 'database', 'postgresql', 'asyncpg', 'async', 'pgutils', 'nosql', 'sqlite'],
+    keywords=['db', 'bot', 'discord bot', 'database', 'postgresql', 'asyncpg', 'async', 'pgutils', 'nosql', 'sqlite', 'aiosqlite', 'discord.py'],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
