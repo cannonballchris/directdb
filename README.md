@@ -5,6 +5,10 @@ A simple library that makes handling SQL databases in python easy without the ne
 
 If you enjoy using this project, consider giving it a star as it helps out a ton <3
 
+Currently Supported Databases:
+- PostgreSQL
+- SQLite
+
 ## Github Repository
 
 https://github.com/cannonballchris/directdb
