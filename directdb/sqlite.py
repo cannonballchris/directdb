@@ -7,7 +7,7 @@
 # By using directdb, you agree to comply with the terms and conditions of the AGPL.
 
 import aiosqlite
-from exceptions import *
+from .exceptions import *
 
 class SQLite:
 	
