@@ -150,6 +150,31 @@ class SQLite:
 		except Exception as e:
 			raise DatabaseFetchException(e)
 	
+	async def fetch_element(self, table:str, element:str, column:str) -> list:
+		"""Fetches a single element from the database in given column.
+
+		Parameters
+		----------
+		table : str
+			The table to fetch data from.
+		element : str
+			The element to fetch.
+		column : str
+			The column to fetch the element from.
+
+		Returns
+		-------
+		list
+			A list of data in tuple format fetched from the database.
+		"""
+		try:
+			query = f"SELECT * FROM {table} WHERE {column} LIKE ?"
+			async with self.conn.cursor() as cur:
+				await cur.execute(query, (element,))
+				return await cur.fetchall()
+		except Exception as e:
+			raise DatabaseFetchException(e)
+
 	async def update(self, table:str, data:dict, data_filter:dict = None) -> bool:
 		"""Updates data in the database.
 
