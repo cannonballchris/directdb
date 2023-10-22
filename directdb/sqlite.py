@@ -170,7 +170,7 @@ class SQLite:
 		try:
 			query = f"SELECT * FROM {table} WHERE {column} LIKE ?"
 			async with self.conn.cursor() as cur:
-				await cur.execute(query, (element,))
+				await cur.execute(query, (f'%{element}%',))
 				return await cur.fetchall()
 		except Exception as e:
 			raise DatabaseFetchException(e)
