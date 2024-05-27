@@ -18,8 +18,7 @@ class DatabaseInsertionException(Exception):
 	"""
 
 	def __init__(self, message):
-		with open("./log.txt", "a") as f:
-			f.write(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
+		print(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
 		super().__init__(message)
 
 class DatabaseTableException(Exception):
@@ -32,8 +31,7 @@ class DatabaseTableException(Exception):
 	"""
 
 	def __init__(self, message):
-		with open("./log.txt", "a") as f:
-			f.write(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
+		print(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
 		super().__init__(message)
 
 class DatabaseFetchException(Exception):
@@ -46,8 +44,7 @@ class DatabaseFetchException(Exception):
 	"""
 
 	def __init__(self, message):
-		with open("./log.txt", "a") as f:
-			f.write(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
+		print(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
 		super().__init__(message)
 
 class DatabaseUpdateException(Exception):
@@ -60,8 +57,7 @@ class DatabaseUpdateException(Exception):
 	"""
 
 	def __init__(self, message):
-		with open("./log.txt", "a") as f:
-			f.write(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
+		print(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
 		super().__init__(message)
 
 class DatabaseDeleteException(Exception):
@@ -75,7 +71,6 @@ class DatabaseDeleteException(Exception):
 
 	def __init__(self, message):
 		self.message = message
-		with open("./log.txt", "a") as f:
-			f.write(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
+		print(f"- ERROR {datetime.datetime.now()} | {self.__class__.__name__} | {message} \n")
 		super().__init__(message)
 
