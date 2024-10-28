@@ -1,0 +1,7 @@
+build
+directdb.egg-info
+dist
+directdb/.pylintrc
+directdb/__pycache__
+.venv
+setup.py
