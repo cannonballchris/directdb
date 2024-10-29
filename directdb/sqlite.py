@@ -9,7 +9,7 @@
 
 import aiosqlite
 
-from exceptions import *
+from .exceptions import *
 
 
 class SQLite:
