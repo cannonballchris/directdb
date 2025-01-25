@@ -108,7 +108,7 @@ class Postgresql:
 			raise DatabaseInsertionException(e)
 		
 
-	async def fetch(self, table:str, *, data_filter:dict = None, **sorting) -> list:
+	async def fetch(self, table:str, *, query_string:str = None, data_filter:dict = None, **sorting, ) -> list:
 		""" Fetches data from the database.
 		
 		Parameters
@@ -129,23 +129,26 @@ class Postgresql:
 
 		"""
 		try:
-			if not data_filter:
-				query = 'SELECT * FROM {}'.format(table)
-				if sorting:
-					sort_by = sorting.get('sort_by', None)
-					sort = sorting.get('sort', None)
-					if sort_by and sort:
-						query += ' ORDER BY {} {}'.format(sort_by, sort)
-				return await self.pool.fetch(query)
+			if query:
+				return await self.pool.fetch(query_string)
 			else:
-				data_filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data_filter)])
-				query = 'SELECT * FROM {} WHERE {}'.format(table, data_filters)
-				if sorting:
-					sort_by = sorting.get('sort_by')
-					sort = sorting.get('sort')
-					if sort_by and sort:
-						query += ' ORDER BY {} {}'.format(sort_by, sort)
-				return await self.pool.fetch(query, *data_filter.values())
+				if not data_filter:
+					query = 'SELECT * FROM {}'.format(table)
+					if sorting:
+						sort_by = sorting.get('sort_by', None)
+						sort = sorting.get('sort', None)
+						if sort_by and sort:
+							query += ' ORDER BY {} {}'.format(sort_by, sort)
+					return await self.pool.fetch(query)
+				else:
+					data_filters = ' AND '.join(['{} = ${}'.format(column, i + 1) for i, column in enumerate(data_filter)])
+					query = 'SELECT * FROM {} WHERE {}'.format(table, data_filters)
+					if sorting:
+						sort_by = sorting.get('sort_by')
+						sort = sorting.get('sort')
+						if sort_by and sort:
+							query += ' ORDER BY {} {}'.format(sort_by, sort)
+					return await self.pool.fetch(query, *data_filter.values())
 
 		except Exception as e:
 			raise DatabaseFetchException(e)
