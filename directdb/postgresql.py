@@ -129,7 +129,7 @@ class Postgresql:
 
 		"""
 		try:
-			if query:
+			if query_string:
 				return await self.pool.fetch(query_string)
 			else:
 				if not data_filter:
